@@ -20,7 +20,7 @@ namespace USATU_OOP_LW_6
 
             colorDialog.Color = _startColor;
             controlCurrentColor.BackColor = _startColor;
-            
+
             _figuresHandler.NeedUpdate += panelForDrawing_Update;
         }
 
@@ -34,13 +34,35 @@ namespace USATU_OOP_LW_6
             panelForDrawing.Invalidate();
         }
 
+        private Figures GetSelectedFigureEnum()
+        {
+            if (radioButtonCircle.Checked)
+            {
+                return Figures.Circle;
+            }
+            else if (radioButtonTriangle.Checked)
+            {
+                return Figures.Triangle;
+            }
+            else if (radioButtonSquare.Checked)
+            {
+                return Figures.Square;
+            }
+            else if (radioButtonPentagon.Checked)
+            {
+                return Figures.Pentagon;
+            }
+
+            return Figures.None;
+        }
+
         private void panelForDrawing_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 if (!_figuresHandler.TryProcessSelectionClick(e.Location))
                 {
-                    _figuresHandler.AddFigure(Figures.Pentagon, colorDialog.Color, e.Location);
+                    _figuresHandler.AddFigure(GetSelectedFigureEnum(), colorDialog.Color, e.Location);
                 }
             }
             else if (e.Button == MouseButtons.Right)

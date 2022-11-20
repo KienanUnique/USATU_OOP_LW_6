@@ -4,6 +4,7 @@ namespace USATU_OOP_LW_6
 {
     public enum Figures
     {
+        None,
         Circle,
         Triangle,
         Square,

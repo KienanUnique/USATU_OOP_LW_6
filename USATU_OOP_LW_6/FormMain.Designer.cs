@@ -32,13 +32,14 @@
             this.panelForDrawing = new System.Windows.Forms.Panel();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.panelColorChoose = new System.Windows.Forms.Panel();
+            this.buttonChooseColor = new System.Windows.Forms.Button();
             this.controlCurrentColor = new System.Windows.Forms.Control();
             this.labelCurrentColor = new System.Windows.Forms.Label();
             this.groupBoxChooseFigure = new System.Windows.Forms.GroupBox();
+            this.radioButtonPentagon = new System.Windows.Forms.RadioButton();
             this.radioButtonTriangle = new System.Windows.Forms.RadioButton();
             this.radioButtonSquare = new System.Windows.Forms.RadioButton();
             this.radioButtonCircle = new System.Windows.Forms.RadioButton();
-            this.buttonChooseColor = new System.Windows.Forms.Button();
             this.panelColorChoose.SuspendLayout();
             this.groupBoxChooseFigure.SuspendLayout();
             this.SuspendLayout();
@@ -64,6 +65,16 @@
             this.panelColorChoose.Size = new System.Drawing.Size(150, 67);
             this.panelColorChoose.TabIndex = 1;
             // 
+            // buttonChooseColor
+            // 
+            this.buttonChooseColor.Location = new System.Drawing.Point(3, 34);
+            this.buttonChooseColor.Name = "buttonChooseColor";
+            this.buttonChooseColor.Size = new System.Drawing.Size(144, 23);
+            this.buttonChooseColor.TabIndex = 2;
+            this.buttonChooseColor.Text = "Change color";
+            this.buttonChooseColor.UseVisualStyleBackColor = true;
+            this.buttonChooseColor.Click += new System.EventHandler(this.buttonChooseColor_Click);
+            // 
             // controlCurrentColor
             // 
             this.controlCurrentColor.BackColor = System.Drawing.Color.Black;
@@ -83,38 +94,47 @@
             // 
             // groupBoxChooseFigure
             // 
+            this.groupBoxChooseFigure.Controls.Add(this.radioButtonPentagon);
             this.groupBoxChooseFigure.Controls.Add(this.radioButtonTriangle);
             this.groupBoxChooseFigure.Controls.Add(this.radioButtonSquare);
             this.groupBoxChooseFigure.Controls.Add(this.radioButtonCircle);
             this.groupBoxChooseFigure.Location = new System.Drawing.Point(638, 85);
             this.groupBoxChooseFigure.Name = "groupBoxChooseFigure";
-            this.groupBoxChooseFigure.Size = new System.Drawing.Size(150, 114);
+            this.groupBoxChooseFigure.Size = new System.Drawing.Size(150, 151);
             this.groupBoxChooseFigure.TabIndex = 2;
             this.groupBoxChooseFigure.TabStop = false;
             this.groupBoxChooseFigure.Text = "Current figure:";
             // 
+            // radioButtonPentagon
+            // 
+            this.radioButtonPentagon.Location = new System.Drawing.Point(6, 109);
+            this.radioButtonPentagon.Name = "radioButtonPentagon";
+            this.radioButtonPentagon.Size = new System.Drawing.Size(104, 24);
+            this.radioButtonPentagon.TabIndex = 0;
+            this.radioButtonPentagon.Text = "Pentagon";
+            this.radioButtonPentagon.UseVisualStyleBackColor = true;
+            // 
             // radioButtonTriangle
             // 
-            this.radioButtonTriangle.Location = new System.Drawing.Point(6, 79);
+            this.radioButtonTriangle.Location = new System.Drawing.Point(6, 49);
             this.radioButtonTriangle.Name = "radioButtonTriangle";
             this.radioButtonTriangle.Size = new System.Drawing.Size(104, 24);
             this.radioButtonTriangle.TabIndex = 0;
-            this.radioButtonTriangle.TabStop = true;
             this.radioButtonTriangle.Text = "Triangle";
             this.radioButtonTriangle.UseVisualStyleBackColor = true;
             // 
             // radioButtonSquare
             // 
-            this.radioButtonSquare.Location = new System.Drawing.Point(6, 49);
+            this.radioButtonSquare.Location = new System.Drawing.Point(6, 79);
             this.radioButtonSquare.Name = "radioButtonSquare";
             this.radioButtonSquare.Size = new System.Drawing.Size(104, 24);
             this.radioButtonSquare.TabIndex = 0;
-            this.radioButtonSquare.TabStop = true;
             this.radioButtonSquare.Text = "Square";
             this.radioButtonSquare.UseVisualStyleBackColor = true;
             // 
             // radioButtonCircle
             // 
+            this.radioButtonCircle.Checked = true;
             this.radioButtonCircle.Location = new System.Drawing.Point(6, 19);
             this.radioButtonCircle.Name = "radioButtonCircle";
             this.radioButtonCircle.Size = new System.Drawing.Size(104, 24);
@@ -122,16 +142,6 @@
             this.radioButtonCircle.TabStop = true;
             this.radioButtonCircle.Text = "Circle";
             this.radioButtonCircle.UseVisualStyleBackColor = true;
-            // 
-            // buttonChooseColor
-            // 
-            this.buttonChooseColor.Location = new System.Drawing.Point(3, 34);
-            this.buttonChooseColor.Name = "buttonChooseColor";
-            this.buttonChooseColor.Size = new System.Drawing.Size(144, 23);
-            this.buttonChooseColor.TabIndex = 2;
-            this.buttonChooseColor.Text = "Change color";
-            this.buttonChooseColor.UseVisualStyleBackColor = true;
-            this.buttonChooseColor.Click += new System.EventHandler(this.buttonChooseColor_Click);
             // 
             // FormMain
             // 
@@ -151,6 +161,8 @@
             this.groupBoxChooseFigure.ResumeLayout(false);
             this.ResumeLayout(false);
         }
+
+        private System.Windows.Forms.RadioButton radioButtonPentagon;
 
         private System.Windows.Forms.Button buttonChooseColor;
 
