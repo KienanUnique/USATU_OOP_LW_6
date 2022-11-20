@@ -2,11 +2,19 @@
 
 namespace USATU_OOP_LW_6
 {
+    public enum Figures
+    {
+        Circle,
+        Triangle,
+        Square,
+        Line
+    }
+
     public static class SelectionBorder
     {
         private const int SelectionBorderWidth = 5;
         private static readonly Color SelectionColor = Color.Black;
-        private static readonly float[] DashValues = {2, 2};
+        private static readonly float[] DashValues = {1, 1};
         private static readonly Pen BorderPen;
 
         static SelectionBorder()
@@ -21,30 +29,35 @@ namespace USATU_OOP_LW_6
         }
     }
 
-    public abstract class Figure
+    public abstract class Figure // TODO: GeometricObject -> (Figure -> Circle etc), Line
     {
-        protected Color _color;
-        protected Rectangle _rectangle;
-        protected SolidBrush _currentBrush;
-        protected bool _isSelected;
-        public abstract bool IsPointInside(Point pointToCheck);
-        public abstract void DrawFigureOnGraphics(Graphics graphics);
+        protected Rectangle FigureRectangle;
+        protected readonly SolidBrush CurrentBrush;
+        protected virtual Size DefaultSize { get; } = Size.Empty;
+
+        private bool _isSelected;
+
+        protected Figure(Color color, Point centerLocation)
+        {
+            var leftTopPoint = new Point(centerLocation.X - DefaultSize.Width / 2,
+                centerLocation.Y - DefaultSize.Height / 2);
+            FigureRectangle = new Rectangle(leftTopPoint, DefaultSize);
+            CurrentBrush = new SolidBrush(color);
+        }
 
         public bool IsFigureOutside(Rectangle backgroundRectangle)
         {
+            //backgroundRectangle.IntersectsWith() // TODO: check this realization variant
+
+            return 0 <= FigureRectangle.Right && FigureRectangle.Left <= backgroundRectangle.Width &&
+                   backgroundRectangle.Height <= FigureRectangle.Top && FigureRectangle.Bottom <= 0;
         }
 
-        public void Color(Color newColor)
-        {
-        }
+        public void Color(Color newColor) => CurrentBrush.Color = newColor;
 
-        public void Resize(Rectangle newSize)
-        {
-        }
+        public void Resize(Size newSize) => FigureRectangle.Size = newSize;
 
-        public void Move(Point newPosition)
-        {
-        }
+        public void Move(Point newLocation) => FigureRectangle.Location = newLocation;
 
         public void DrawOnGraphics(Graphics graphics)
         {
@@ -75,25 +88,38 @@ namespace USATU_OOP_LW_6
             _isSelected = !_isSelected;
         }
 
+        public abstract bool IsPointInside(Point pointToCheck);
+        protected abstract void DrawFigureOnGraphics(Graphics graphics);
+
         private void DrawSelectionBorders(Graphics graphics)
         {
-            SelectionBorder.DrawSelectionBorder(graphics, _rectangle);
+            SelectionBorder.DrawSelectionBorder(graphics, FigureRectangle);
         }
     }
 
     public class Circle : Figure
     {
+        protected override Size DefaultSize { get; } = new Size(50, 50);
+
+        public Circle(Color color, Point location) : base(color, location)
+        {
+        }
+
         public override bool IsPointInside(Point pointToCheck)
         {
-            var circleRadius = _rectangle.Width / 2;
-            var tmpX = pointToCheck.X - _rectangle.Location.X - circleRadius;
-            var tmpY = pointToCheck.Y - _rectangle.Location.Y - circleRadius;
+            var circleRadius = FigureRectangle.Width / 2;
+            var tmpX = pointToCheck.X - FigureRectangle.Location.X - circleRadius;
+            var tmpY = pointToCheck.Y - FigureRectangle.Location.Y - circleRadius;
             return tmpX * tmpX + tmpY * tmpY <= circleRadius * circleRadius;
         }
 
-        public override void DrawFigureOnGraphics(Graphics graphics)
+        protected override void DrawFigureOnGraphics(Graphics graphics)
         {
-            graphics.FillEllipse(_currentBrush, _rectangle);
+            graphics.FillEllipse(CurrentBrush, FigureRectangle);
         }
     }
+
+    //TODO: Triangle
+    //TODO: Square, Line
+    //TODO: Line
 }

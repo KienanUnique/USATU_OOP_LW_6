@@ -8,3 +8,4 @@ C:\Users\wi\RiderProjects\USATU_OOP_LW_6\USATU_OOP_LW_6\obj\Debug\USATU_OOP_LW_6
 C:\Users\wi\RiderProjects\USATU_OOP_LW_6\USATU_OOP_LW_6\obj\Debug\USATU_OOP_LW_6.csproj.CoreCompileInputs.cache
 C:\Users\wi\RiderProjects\USATU_OOP_LW_6\USATU_OOP_LW_6\obj\Debug\USATU_OOP_LW_6.exe
 C:\Users\wi\RiderProjects\USATU_OOP_LW_6\USATU_OOP_LW_6\obj\Debug\USATU_OOP_LW_6.pdb
+C:\Users\wi\RiderProjects\USATU_OOP_LW_6\USATU_OOP_LW_6\obj\Debug\USATU_OOP_LW_6.FormMain.resources
