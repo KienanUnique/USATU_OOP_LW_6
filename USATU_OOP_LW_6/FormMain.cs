@@ -12,7 +12,7 @@ namespace USATU_OOP_LW_6
         public FormMain()
         {
             InitializeComponent();
-            _figuresHandler = new FiguresHandler(panelForDrawing.ClientRectangle);
+            _figuresHandler = new FiguresHandler(panelForDrawing.DisplayRectangle.Size);
             this.KeyPreview = true;
             _figuresHandler.NeedUpdate += panelForDrawing_Update;
         }

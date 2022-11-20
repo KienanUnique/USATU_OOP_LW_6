@@ -11,9 +11,9 @@ namespace USATU_OOP_LW_6
 
         private readonly CustomDoublyLinkedList<Figure> _figures = new CustomDoublyLinkedList<Figure>();
         private bool _isMultipleSelectionEnabled;
-        private Rectangle _backgroundRectangle;
+        private readonly Size _backgroundSize;
 
-        public FiguresHandler(Rectangle backgroundRectangle) => _backgroundRectangle = backgroundRectangle;
+        public FiguresHandler(Size backgroundSize) => _backgroundSize = backgroundSize;
 
         public void DrawAllCirclesOnGraphics(Graphics graphics)
         {
@@ -68,7 +68,7 @@ namespace USATU_OOP_LW_6
                     break;
             }
 
-            if (!newFigure.IsFigureOutside(_backgroundRectangle))
+            if (!newFigure.IsFigureOutside(_backgroundSize))
             {
                 _figures.Add(newFigure);
                 NeedUpdate?.Invoke();
@@ -117,7 +117,7 @@ namespace USATU_OOP_LW_6
             bool wasSomethingResized = false;
             for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
             {
-                if (i.Current.IsSelected() && i.Current.TryResize(changeSizeK, resizeAction, _backgroundRectangle))
+                if (i.Current.IsSelected() && i.Current.TryResize(changeSizeK, resizeAction, _backgroundSize))
                 {
                     wasSomethingResized = true;
                 }

@@ -51,14 +51,14 @@ namespace USATU_OOP_LW_6
             CurrentBrush = new SolidBrush(color);
         }
 
-        public bool IsFigureOutside(Rectangle backgroundRectangle)
+        public bool IsFigureOutside(Size backgroundSize)
         {
-            return IsFigureOutside(FigureRectangle, backgroundRectangle);
+            return IsFigureOutside(FigureRectangle, backgroundSize);
         }
 
         public void Color(Color newColor) => CurrentBrush.Color = newColor;
 
-        public bool TryResize(int sizeK, ResizeAction resizeAction, Rectangle backgroundRectangle)
+        public bool TryResize(int sizeK, ResizeAction resizeAction, Size backgroundSize)
         {
             var newFigureRectangle = new Rectangle();
             switch (resizeAction)
@@ -73,7 +73,7 @@ namespace USATU_OOP_LW_6
                     break;
             }
 
-            if (!IsFigureOutside(newFigureRectangle, backgroundRectangle))
+            if (!IsFigureOutside(newFigureRectangle, backgroundSize))
             {
                 FigureRectangle = newFigureRectangle;
                 return true;
@@ -120,10 +120,11 @@ namespace USATU_OOP_LW_6
         {
             SelectionBorder.DrawSelectionBorder(graphics, FigureRectangle);
         }
-        private static bool IsFigureOutside(Rectangle figureRectangle, Rectangle backgroundRectangle)
+
+        private static bool IsFigureOutside(Rectangle figureRectangle, Size backgroundSize)
         {
-            return 0 > figureRectangle.Left || figureRectangle.Right > backgroundRectangle.Width ||
-                   backgroundRectangle.Height < figureRectangle.Bottom || figureRectangle.Top < 0;
+            return 0 > figureRectangle.Left || figureRectangle.Right > backgroundSize.Width ||
+                   backgroundSize.Height < figureRectangle.Bottom || figureRectangle.Top < 0;
         }
     }
 
