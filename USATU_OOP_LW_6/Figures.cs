@@ -73,16 +73,21 @@ namespace USATU_OOP_LW_6
                     break;
             }
 
-            if (!IsFigureOutside(newFigureRectangle, backgroundSize))
-            {
-                FigureRectangle = newFigureRectangle;
-                return true;
-            }
-
-            return false;
+            if (IsFigureOutside(newFigureRectangle, backgroundSize)) return false;
+            FigureRectangle = newFigureRectangle;
+            return true;
         }
 
-        public void Move(Point newLocation) => FigureRectangle.Location = newLocation;
+        public bool TryMove(Point moveVector, Size backgroundSize)
+        {
+            var newFigureRectangle =
+                new Rectangle(
+                    new Point(FigureRectangle.Location.X + moveVector.X, FigureRectangle.Location.Y + moveVector.Y),
+                    FigureRectangle.Size);
+            if (IsFigureOutside(newFigureRectangle, backgroundSize)) return false;
+            FigureRectangle = newFigureRectangle;
+            return true;
+        }
 
         public void DrawOnGraphics(Graphics graphics)
         {

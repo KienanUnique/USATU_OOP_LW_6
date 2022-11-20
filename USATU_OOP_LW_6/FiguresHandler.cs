@@ -9,7 +9,7 @@ namespace USATU_OOP_LW_6
 
         public event NeedUpdateHandler NeedUpdate;
 
-        private readonly CustomDoublyLinkedList<Figure> _figures = new CustomDoublyLinkedList<Figure>();
+        private readonly CustomDoublyLinkedList<Figure> _figures = new();
         private bool _isMultipleSelectionEnabled;
         private readonly Size _backgroundSize;
 
@@ -36,7 +36,7 @@ namespace USATU_OOP_LW_6
         public bool TryProcessSelectionClick(Point clickPoint)
         {
             bool wasOnCircleClick = false;
-            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
+            for (var i = _figures.GetPointerOnEnd(); !i.IsBorderReached(); i.MovePrevious())
             {
                 if (i.Current.IsPointInside(clickPoint))
                 {
@@ -47,6 +47,7 @@ namespace USATU_OOP_LW_6
                     }
 
                     i.Current.ProcessClick();
+                    break;
                 }
             }
 
@@ -80,7 +81,7 @@ namespace USATU_OOP_LW_6
         public void ProcessColorClick(Point clickLocation, Color color)
         {
             bool wasFigureClicked = false;
-            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
+            for (var i = _figures.GetPointerOnEnd(); !i.IsBorderReached(); i.MovePrevious())
             {
                 if (i.Current.IsPointInside(clickLocation))
                 {
@@ -124,6 +125,23 @@ namespace USATU_OOP_LW_6
             }
 
             if (wasSomethingResized)
+            {
+                NeedUpdate?.Invoke();
+            }
+        }
+
+        public void MoveSelectedFigures(Point moveVector)
+        {
+            bool wasSomethingMoved = false;
+            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
+            {
+                if (i.Current.IsSelected() && i.Current.TryMove(moveVector, _backgroundSize))
+                {
+                    wasSomethingMoved = true;
+                }
+            }
+
+            if (wasSomethingMoved)
             {
                 NeedUpdate?.Invoke();
             }

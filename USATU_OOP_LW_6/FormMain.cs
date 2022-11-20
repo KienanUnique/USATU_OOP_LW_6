@@ -6,6 +6,7 @@ namespace USATU_OOP_LW_6
     public partial class FormMain : Form
     {
         private const int ChangeSizeK = 2;
+        private const int MoveLength = 10;
         private readonly FiguresHandler _figuresHandler;
         private bool _wasControlAlreadyPressed;
 
@@ -44,10 +45,24 @@ namespace USATU_OOP_LW_6
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.ControlKey && !_wasControlAlreadyPressed)
+            switch (e.KeyCode)
             {
-                _figuresHandler.EnableMultipleSelection();
-                _wasControlAlreadyPressed = true;
+                case Keys.ControlKey when !_wasControlAlreadyPressed:
+                    _figuresHandler.EnableMultipleSelection();
+                    _wasControlAlreadyPressed = true;
+                    break;
+                case Keys.Up:
+                    _figuresHandler.MoveSelectedFigures(new Point(0, -1 * MoveLength));
+                    break;
+                case Keys.Down:
+                    _figuresHandler.MoveSelectedFigures(new Point(0, MoveLength));
+                    break;
+                case Keys.Left:
+                    _figuresHandler.MoveSelectedFigures(new Point(-1 * MoveLength, 0));
+                    break;
+                case Keys.Right:
+                    _figuresHandler.MoveSelectedFigures(new Point(MoveLength, 0));
+                    break;
             }
         }
 
