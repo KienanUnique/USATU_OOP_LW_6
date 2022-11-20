@@ -11,8 +11,9 @@ namespace USATU_OOP_LW_6
 
         private readonly CustomDoublyLinkedList<Figure> _figures = new CustomDoublyLinkedList<Figure>();
         private bool _isMultipleSelectionEnabled;
+        private Rectangle _backgroundRectangle;
 
-        // TODO: Resize????
+        public FiguresHandler(Rectangle backgroundRectangle) => _backgroundRectangle = backgroundRectangle;
 
         public void DrawAllCirclesOnGraphics(Graphics graphics)
         {
@@ -32,7 +33,7 @@ namespace USATU_OOP_LW_6
             _isMultipleSelectionEnabled = false;
         }
 
-        public bool ProcessSelectionClick(Point clickPoint)
+        public bool TryProcessSelectionClick(Point clickPoint)
         {
             bool wasOnCircleClick = false;
             for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
@@ -59,15 +60,21 @@ namespace USATU_OOP_LW_6
 
         public void AddFigure(Figures figureType, Color color, Point location)
         {
+            Figure newFigure = null;
             switch (figureType)
             {
                 case Figures.Circle:
-                    _figures.Add(new Circle(color, location));
+                    newFigure = new Circle(color, location);
                     break;
             }
 
+            if (!newFigure.IsFigureOutside(_backgroundRectangle))
+            {
+                _figures.Add(newFigure);
+                NeedUpdate?.Invoke();
+            }
+
             TryUnselectAll();
-            NeedUpdate?.Invoke();
         }
 
         public void ProcessColorClick(Point clickLocation, Color color)
@@ -92,6 +99,7 @@ namespace USATU_OOP_LW_6
                     {
                         i.Current.Color(color);
                         TryUnselectAll();
+                        i.Current.Select();
                     }
 
                     break;
@@ -99,6 +107,23 @@ namespace USATU_OOP_LW_6
             }
 
             if (wasFigureClicked || TryUnselectAll())
+            {
+                NeedUpdate?.Invoke();
+            }
+        }
+
+        public void ResizeSelectedFigures(int changeSizeK, ResizeAction resizeAction)
+        {
+            bool wasSomethingResized = false;
+            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
+            {
+                if (i.Current.IsSelected() && i.Current.TryResize(changeSizeK, resizeAction, _backgroundRectangle))
+                {
+                    wasSomethingResized = true;
+                }
+            }
+
+            if (wasSomethingResized)
             {
                 NeedUpdate?.Invoke();
             }

@@ -10,6 +10,12 @@ namespace USATU_OOP_LW_6
         Line
     }
 
+    public enum ResizeAction
+    {
+        Increase,
+        Decrease
+    }
+
     public static class SelectionBorder
     {
         private const int SelectionBorderWidth = 5;
@@ -47,15 +53,34 @@ namespace USATU_OOP_LW_6
 
         public bool IsFigureOutside(Rectangle backgroundRectangle)
         {
-            //backgroundRectangle.IntersectsWith() // TODO: check this realization variant
-
-            return 0 <= FigureRectangle.Right && FigureRectangle.Left <= backgroundRectangle.Width &&
-                   backgroundRectangle.Height <= FigureRectangle.Top && FigureRectangle.Bottom <= 0;
+            return IsFigureOutside(FigureRectangle, backgroundRectangle);
         }
 
         public void Color(Color newColor) => CurrentBrush.Color = newColor;
 
-        public void Resize(Size newSize) => FigureRectangle.Size = newSize;
+        public bool TryResize(int sizeK, ResizeAction resizeAction, Rectangle backgroundRectangle)
+        {
+            var newFigureRectangle = new Rectangle();
+            switch (resizeAction)
+            {
+                case ResizeAction.Increase:
+                    newFigureRectangle = new Rectangle(FigureRectangle.Location,
+                        new Size(FigureRectangle.Size.Width * sizeK, FigureRectangle.Size.Height * sizeK));
+                    break;
+                case ResizeAction.Decrease:
+                    newFigureRectangle = new Rectangle(FigureRectangle.Location,
+                        new Size(FigureRectangle.Size.Width / sizeK, FigureRectangle.Size.Height / sizeK));
+                    break;
+            }
+
+            if (!IsFigureOutside(newFigureRectangle, backgroundRectangle))
+            {
+                FigureRectangle = newFigureRectangle;
+                return true;
+            }
+
+            return false;
+        }
 
         public void Move(Point newLocation) => FigureRectangle.Location = newLocation;
 
@@ -94,6 +119,11 @@ namespace USATU_OOP_LW_6
         private void DrawSelectionBorders(Graphics graphics)
         {
             SelectionBorder.DrawSelectionBorder(graphics, FigureRectangle);
+        }
+        private static bool IsFigureOutside(Rectangle figureRectangle, Rectangle backgroundRectangle)
+        {
+            return 0 > figureRectangle.Left || figureRectangle.Right > backgroundRectangle.Width ||
+                   backgroundRectangle.Height < figureRectangle.Bottom || figureRectangle.Top < 0;
         }
     }
 

@@ -5,13 +5,14 @@ namespace USATU_OOP_LW_6
 {
     public partial class FormMain : Form
     {
+        private const int ChangeSizeK = 2;
         private readonly FiguresHandler _figuresHandler;
         private bool _wasControlAlreadyPressed;
 
         public FormMain()
         {
             InitializeComponent();
-            _figuresHandler = new FiguresHandler();
+            _figuresHandler = new FiguresHandler(panelForDrawing.ClientRectangle);
             this.KeyPreview = true;
             _figuresHandler.NeedUpdate += panelForDrawing_Update;
         }
@@ -30,7 +31,7 @@ namespace USATU_OOP_LW_6
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (!_figuresHandler.ProcessSelectionClick(e.Location))
+                if (!_figuresHandler.TryProcessSelectionClick(e.Location))
                 {
                     _figuresHandler.AddFigure(Figures.Circle, Color.Black, e.Location);
                 }
@@ -60,6 +61,12 @@ namespace USATU_OOP_LW_6
                     break;
                 case Keys.Delete:
                     _figuresHandler.DeleteAllSelected();
+                    break;
+                case Keys.Oemplus:
+                    _figuresHandler.ResizeSelectedFigures(ChangeSizeK, ResizeAction.Increase);
+                    break;
+                case Keys.OemMinus:
+                    _figuresHandler.ResizeSelectedFigures(ChangeSizeK, ResizeAction.Decrease);
                     break;
             }
         }
