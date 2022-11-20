@@ -67,6 +67,15 @@ namespace USATU_OOP_LW_6
                 case Figures.Circle:
                     newFigure = new Circle(color, location);
                     break;
+                case Figures.Square:
+                    newFigure = new Square(color, location);
+                    break;
+                case Figures.Triangle:
+                    newFigure = new Triangle(color, location);
+                    break;
+                case Figures.Pentagon:
+                    newFigure = new Pentagon(color, location);
+                    break;
             }
 
             if (!newFigure.IsFigureOutside(_backgroundSize))

@@ -7,7 +7,7 @@ namespace USATU_OOP_LW_6
         Circle,
         Triangle,
         Square,
-        Line
+        Pentagon
     }
 
     public enum ResizeAction
@@ -35,19 +35,20 @@ namespace USATU_OOP_LW_6
         }
     }
 
-    public abstract class Figure // TODO: GeometricObject -> (Figure -> Circle etc), Line
+    public abstract class Figure
     {
         protected Rectangle FigureRectangle;
         protected readonly SolidBrush CurrentBrush;
-        protected virtual Size DefaultSize { get; } = Size.Empty;
 
+        private readonly Size _defaultSize = new Size(50, 50);
+        private readonly Size _minimumSize = new Size(10, 10);
         private bool _isSelected;
 
         protected Figure(Color color, Point centerLocation)
         {
-            var leftTopPoint = new Point(centerLocation.X - DefaultSize.Width / 2,
-                centerLocation.Y - DefaultSize.Height / 2);
-            FigureRectangle = new Rectangle(leftTopPoint, DefaultSize);
+            var leftTopPoint = new Point(centerLocation.X - _defaultSize.Width / 2,
+                centerLocation.Y - _defaultSize.Height / 2);
+            FigureRectangle = new Rectangle(leftTopPoint, _defaultSize);
             CurrentBrush = new SolidBrush(color);
         }
 
@@ -73,7 +74,9 @@ namespace USATU_OOP_LW_6
                     break;
             }
 
-            if (IsFigureOutside(newFigureRectangle, backgroundSize)) return false;
+            if (IsFigureOutside(newFigureRectangle, backgroundSize) ||
+                newFigureRectangle.Size.Height < _minimumSize.Height ||
+                newFigureRectangle.Size.Width < _minimumSize.Width) return false;
             FigureRectangle = newFigureRectangle;
             return true;
         }
@@ -121,6 +124,12 @@ namespace USATU_OOP_LW_6
         public abstract bool IsPointInside(Point pointToCheck);
         protected abstract void DrawFigureOnGraphics(Graphics graphics);
 
+        protected static bool IsUnderLine(Point firstLinePoint, Point secondLinePoint, Point checkPoint)
+        {
+            return (checkPoint.X - firstLinePoint.X) * (secondLinePoint.Y - firstLinePoint.Y) -
+                (checkPoint.Y - firstLinePoint.Y) * (secondLinePoint.X - firstLinePoint.X) <= 0;
+        }
+
         private void DrawSelectionBorders(Graphics graphics)
         {
             SelectionBorder.DrawSelectionBorder(graphics, FigureRectangle);
@@ -135,8 +144,6 @@ namespace USATU_OOP_LW_6
 
     public class Circle : Figure
     {
-        protected override Size DefaultSize { get; } = new Size(50, 50);
-
         public Circle(Color color, Point location) : base(color, location)
         {
         }
@@ -155,7 +162,75 @@ namespace USATU_OOP_LW_6
         }
     }
 
-    //TODO: Triangle
-    //TODO: Square, Line
-    //TODO: Line
+    public class Square : Figure
+    {
+        public Square(Color color, Point location) : base(color, location)
+        {
+        }
+
+        public override bool IsPointInside(Point pointToCheck)
+        {
+            return FigureRectangle.Contains(pointToCheck);
+        }
+
+        protected override void DrawFigureOnGraphics(Graphics graphics)
+        {
+            graphics.FillRectangle(CurrentBrush, FigureRectangle);
+        }
+    }
+
+    public class Triangle : Figure
+    {
+        public Triangle(Color color, Point location) : base(color, location)
+        {
+        }
+
+        public override bool IsPointInside(Point pointToCheck)
+        {
+            return (FigureRectangle.Contains(pointToCheck) && IsUnderLine(FigureRectangle.Location,
+                new Point(FigureRectangle.Location.X + FigureRectangle.Width,
+                    FigureRectangle.Location.Y + FigureRectangle.Height), pointToCheck));
+        }
+
+        protected override void DrawFigureOnGraphics(Graphics graphics)
+        {
+            Point[] points =
+            {
+                FigureRectangle.Location, new Point(FigureRectangle.Left, FigureRectangle.Bottom),
+                new Point(FigureRectangle.Right, FigureRectangle.Bottom)
+            };
+            graphics.FillPolygon(CurrentBrush, points);
+        }
+    }
+
+    public class Pentagon : Figure
+    {
+        public Pentagon(Color color, Point location) : base(color, location)
+        {
+        }
+
+        public override bool IsPointInside(Point pointToCheck)
+        {
+            var isUnderLeftCornerLine = IsUnderLine(
+                new Point(FigureRectangle.Left, FigureRectangle.Bottom - FigureRectangle.Height / 2),
+                new Point(FigureRectangle.Right - FigureRectangle.Width / 2, FigureRectangle.Top), pointToCheck);
+            var isUnderRightCornerLine = IsUnderLine(
+                new Point(FigureRectangle.Right - FigureRectangle.Width / 2, FigureRectangle.Top),
+                new Point(FigureRectangle.Right, FigureRectangle.Bottom - FigureRectangle.Height / 2), pointToCheck);
+            return FigureRectangle.Contains(pointToCheck) && isUnderLeftCornerLine && isUnderRightCornerLine;
+        }
+
+        protected override void DrawFigureOnGraphics(Graphics graphics)
+        {
+            Point[] points =
+            {
+                new Point(FigureRectangle.Left, FigureRectangle.Bottom - FigureRectangle.Height / 2),
+                new Point(FigureRectangle.Right - FigureRectangle.Width / 2, FigureRectangle.Top),
+                new Point(FigureRectangle.Right, FigureRectangle.Bottom - FigureRectangle.Height / 2),
+                new Point(FigureRectangle.Right, FigureRectangle.Bottom),
+                new Point(FigureRectangle.Left, FigureRectangle.Bottom),
+            };
+            graphics.FillPolygon(CurrentBrush, points);
+        }
+    }
 }

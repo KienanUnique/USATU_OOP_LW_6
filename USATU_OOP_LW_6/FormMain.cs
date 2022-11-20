@@ -40,7 +40,7 @@ namespace USATU_OOP_LW_6
             {
                 if (!_figuresHandler.TryProcessSelectionClick(e.Location))
                 {
-                    _figuresHandler.AddFigure(Figures.Circle, colorDialog.Color, e.Location);
+                    _figuresHandler.AddFigure(Figures.Pentagon, colorDialog.Color, e.Location);
                 }
             }
             else if (e.Button == MouseButtons.Right)
@@ -57,16 +57,16 @@ namespace USATU_OOP_LW_6
                     _figuresHandler.EnableMultipleSelection();
                     _wasControlAlreadyPressed = true;
                     break;
-                case Keys.Up:
+                case Keys.W:
                     _figuresHandler.MoveSelectedFigures(new Point(0, -1 * MoveLength));
                     break;
-                case Keys.Down:
+                case Keys.S:
                     _figuresHandler.MoveSelectedFigures(new Point(0, MoveLength));
                     break;
-                case Keys.Left:
+                case Keys.A:
                     _figuresHandler.MoveSelectedFigures(new Point(-1 * MoveLength, 0));
                     break;
-                case Keys.Right:
+                case Keys.D:
                     _figuresHandler.MoveSelectedFigures(new Point(MoveLength, 0));
                     break;
             }
