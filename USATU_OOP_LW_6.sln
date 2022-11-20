@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "USATU_OOP_LW_6", "USATU_OOP_LW_6\USATU_OOP_LW_6.csproj", "{37A1D229-FEBC-4D5F-8B46-1B5468FC377A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomDoublyLinkedListLibrary", "CustomDoublyLinkedListLibrary\CustomDoublyLinkedListLibrary.csproj", "{CA90D079-48F6-498D-A1EA-D234FED7EF16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{37A1D229-FEBC-4D5F-8B46-1B5468FC377A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37A1D229-FEBC-4D5F-8B46-1B5468FC377A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37A1D229-FEBC-4D5F-8B46-1B5468FC377A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA90D079-48F6-498D-A1EA-D234FED7EF16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA90D079-48F6-498D-A1EA-D234FED7EF16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA90D079-48F6-498D-A1EA-D234FED7EF16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA90D079-48F6-498D-A1EA-D234FED7EF16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
