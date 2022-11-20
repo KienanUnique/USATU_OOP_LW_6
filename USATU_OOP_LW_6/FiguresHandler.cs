@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
+using CustomDoublyLinkedListLibrary;
 
 namespace USATU_OOP_LW_6
 {
@@ -10,16 +9,16 @@ namespace USATU_OOP_LW_6
 
         public event NeedUpdateHandler NeedUpdate;
 
-        private readonly List<Figure> _figures = new List<Figure>(); //TODO: change to custom list
+        private readonly CustomDoublyLinkedList<Figure> _figures = new CustomDoublyLinkedList<Figure>();
         private bool _isMultipleSelectionEnabled;
 
         // TODO: Resize????
 
         public void DrawAllCirclesOnGraphics(Graphics graphics)
         {
-            foreach (var figure in _figures)
+            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
             {
-                figure.DrawOnGraphics(graphics);
+                i.Current.DrawOnGraphics(graphics);
             }
         }
 
@@ -36,15 +35,18 @@ namespace USATU_OOP_LW_6
         public bool ProcessSelectionClick(Point clickPoint)
         {
             bool wasOnCircleClick = false;
-            foreach (var figure in _figures.Where(figure => figure.IsPointInside(clickPoint)))
+            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
             {
-                wasOnCircleClick = true;
-                if (!figure.IsSelected() && !_isMultipleSelectionEnabled)
+                if (i.Current.IsPointInside(clickPoint))
                 {
-                    TryUnselectAll();
-                }
+                    wasOnCircleClick = true;
+                    if (!i.Current.IsSelected() && !_isMultipleSelectionEnabled)
+                    {
+                        TryUnselectAll();
+                    }
 
-                figure.ProcessClick();
+                    i.Current.ProcessClick();
+                }
             }
 
             if (wasOnCircleClick || TryUnselectAll())
@@ -71,22 +73,29 @@ namespace USATU_OOP_LW_6
         public void ProcessColorClick(Point clickLocation, Color color)
         {
             bool wasFigureClicked = false;
-            foreach (var figure in _figures.Where(figure => figure.IsPointInside(clickLocation)))
+            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
             {
-                wasFigureClicked = true;
-                if (figure.IsSelected())
+                if (i.Current.IsPointInside(clickLocation))
                 {
-                    foreach (var currentFigure in _figures.Where(currentFigure => currentFigure.IsSelected()))
+                    wasFigureClicked = true;
+                    if (i.Current.IsSelected())
                     {
-                        currentFigure.Color(color);
+                        for (var k = _figures.GetPointerOnBeginning(); !k.IsBorderReached(); k.MoveNext())
+                        {
+                            if (k.Current.IsSelected())
+                            {
+                                k.Current.Color(color);
+                            }
+                        }
                     }
+                    else
+                    {
+                        i.Current.Color(color);
+                        TryUnselectAll();
+                    }
+
+                    break;
                 }
-                else
-                {
-                    figure.Color(color);
-                    TryUnselectAll();
-                }
-                break;
             }
 
             if (wasFigureClicked || TryUnselectAll())
@@ -98,13 +107,12 @@ namespace USATU_OOP_LW_6
         public void DeleteAllSelected()
         {
             bool wasFigureDeleted = false;
-            for (int i = 0; i < _figures.Count; i++)
+            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
             {
-                if (_figures[i].IsSelected())
+                if (i.Current.IsSelected())
                 {
                     wasFigureDeleted = true;
-                    _figures.RemoveAt(i);
-                    i--;
+                    _figures.RemovePointerElement(i);
                 }
             }
 
@@ -117,10 +125,13 @@ namespace USATU_OOP_LW_6
         private bool TryUnselectAll()
         {
             bool wasSomethingUnselected = false;
-            foreach (var figure in _figures.Where(figure => figure.IsSelected()))
+            for (var i = _figures.GetPointerOnBeginning(); !i.IsBorderReached(); i.MoveNext())
             {
-                wasSomethingUnselected = true;
-                figure.Unselect();
+                if (i.Current.IsSelected())
+                {
+                    wasSomethingUnselected = true;
+                    i.Current.Unselect();
+                }
             }
 
             return wasSomethingUnselected;
