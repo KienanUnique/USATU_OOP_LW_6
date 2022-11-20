@@ -12,6 +12,7 @@
         <FileAlignment>512</FileAlignment>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Deterministic>true</Deterministic>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +48,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Figures.cs" />
+        <Compile Include="FiguresHandler.cs" />
         <Compile Include="FormMain.cs">
             <SubType>Form</SubType>
         </Compile>
@@ -55,6 +57,9 @@
         </Compile>
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <EmbeddedResource Include="FormMain.resx">
+          <DependentUpon>FormMain.cs</DependentUpon>
+        </EmbeddedResource>
         <EmbeddedResource Include="Properties\Resources.resx">
             <Generator>ResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -76,6 +81,12 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\CustomDoublyLinkedListLibrary\CustomDoublyLinkedListLibrary.csproj">
+        <Project>{ca90d079-48f6-498d-a1ea-d234fed7ef16}</Project>
+        <Name>CustomDoublyLinkedListLibrary</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
