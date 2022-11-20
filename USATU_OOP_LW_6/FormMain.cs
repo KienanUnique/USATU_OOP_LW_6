@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace USATU_OOP_LW_6
@@ -7,6 +8,7 @@ namespace USATU_OOP_LW_6
     {
         private const int ChangeSizeK = 2;
         private const int MoveLength = 10;
+        private readonly Color _startColor = Color.Coral;
         private readonly FiguresHandler _figuresHandler;
         private bool _wasControlAlreadyPressed;
 
@@ -15,6 +17,10 @@ namespace USATU_OOP_LW_6
             InitializeComponent();
             _figuresHandler = new FiguresHandler(panelForDrawing.DisplayRectangle.Size);
             this.KeyPreview = true;
+
+            colorDialog.Color = _startColor;
+            controlCurrentColor.BackColor = _startColor;
+            
             _figuresHandler.NeedUpdate += panelForDrawing_Update;
         }
 
@@ -34,12 +40,12 @@ namespace USATU_OOP_LW_6
             {
                 if (!_figuresHandler.TryProcessSelectionClick(e.Location))
                 {
-                    _figuresHandler.AddFigure(Figures.Circle, Color.Black, e.Location);
+                    _figuresHandler.AddFigure(Figures.Circle, colorDialog.Color, e.Location);
                 }
             }
             else if (e.Button == MouseButtons.Right)
             {
-                _figuresHandler.ProcessColorClick(e.Location, Color.Coral);
+                _figuresHandler.ProcessColorClick(e.Location, colorDialog.Color);
             }
         }
 
@@ -83,6 +89,14 @@ namespace USATU_OOP_LW_6
                 case Keys.OemMinus:
                     _figuresHandler.ResizeSelectedFigures(ChangeSizeK, ResizeAction.Decrease);
                     break;
+            }
+        }
+
+        private void buttonChooseColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                controlCurrentColor.BackColor = colorDialog.Color;
             }
         }
     }
