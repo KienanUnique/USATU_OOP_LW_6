@@ -40,6 +40,7 @@
             this.radioButtonTriangle = new System.Windows.Forms.RadioButton();
             this.radioButtonSquare = new System.Windows.Forms.RadioButton();
             this.radioButtonCircle = new System.Windows.Forms.RadioButton();
+            this.textBoxControlPromts = new System.Windows.Forms.TextBox();
             this.panelColorChoose.SuspendLayout();
             this.groupBoxChooseFigure.SuspendLayout();
             this.SuspendLayout();
@@ -143,12 +144,24 @@
             this.radioButtonCircle.Text = "Circle";
             this.radioButtonCircle.UseVisualStyleBackColor = true;
             // 
+            // textBoxControlPromts
+            // 
+            this.textBoxControlPromts.Location = new System.Drawing.Point(638, 242);
+            this.textBoxControlPromts.Multiline = true;
+            this.textBoxControlPromts.Name = "textBoxControlPromts";
+            this.textBoxControlPromts.ReadOnly = true;
+            this.textBoxControlPromts.Size = new System.Drawing.Size(150, 196);
+            this.textBoxControlPromts.TabIndex = 3;
+            this.textBoxControlPromts.Text = "=== Control prompts ===\r\nSelect: LeftClick\r\nMultiselect: Ctrl + LeftClick\r\nDelete" + ": Del\r\nPaint: RightClick\r\nIncrease size: +\r\nDecrease size: -\r\nMove up: W\r\nMove d" + "own: S\r\nMove left: A\r\nMove right: D";
+            this.textBoxControlPromts.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBoxControlPromts);
             this.Controls.Add(this.groupBoxChooseFigure);
             this.Controls.Add(this.panelColorChoose);
             this.Controls.Add(this.panelForDrawing);
@@ -160,7 +173,10 @@
             this.panelColorChoose.ResumeLayout(false);
             this.groupBoxChooseFigure.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
         }
+
+        private System.Windows.Forms.TextBox textBoxControlPromts;
 
         private System.Windows.Forms.RadioButton radioButtonPentagon;
 
